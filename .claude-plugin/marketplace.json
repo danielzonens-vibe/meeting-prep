@@ -1,0 +1,14 @@
+{
+  "name": "danielzonens",
+  "description": "Daniel Zonens — tools for getting ready for meetings.",
+  "owner": {
+    "name": "Daniel Zonens"
+  },
+  "plugins": [
+    {
+      "name": "meeting-prep",
+      "source": "./",
+      "description": "A one-page prep brief for your next meeting, built from your own sources, every quote and figure checked."
+    }
+  ]
+}
