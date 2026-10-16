@@ -83,8 +83,13 @@ cases: the strongest evidence that it generalizes, and the strongest
 that it doesn't. Picking only evidence near the reader's own example is
 the easiest bias to miss, because every fact picked is true.
 
-- **[for]** <finding> · `<source>` or *Reading, not stated by any source*
-- **[against]** <finding> · `<source>`
+**IDs.** Every finding opens with an ID: `KF-`, this file's name without
+`.md`, and a number. Numbers are never reused within a file — a finding
+that drops off the list takes its number with it. The brief cites the ID
+where it uses the finding, so `coverage.js` can count what reached it.
+
+- **[KF-<file-name>-1]** **[for]** <finding> · `<source>` or *Reading, not stated by any source*
+- **[KF-<file-name>-2]** **[against]** <finding> · `<source>`
 
 ## Depends on
 Every open plan or likely decision on this topic, and what it relies on —

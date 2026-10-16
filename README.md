@@ -6,6 +6,8 @@ It finds the meeting, reads what's relevant from your own sources — calendar, 
 
 Every quote and figure in the brief is checked against the source it came from before you see it. If a quote isn't word-for-word, it doesn't stay in quotation marks.
 
+Then a second, independent model reads your raw material — not the skill's notes — writes down what you must walk in knowing, and checks the brief against that list. If the brief misses something important, it gets revised; if it still misses it, the brief carries a warning at the top naming what's missing and where it is. This check is a full extra model run, so a brief costs noticeably more tokens than in v0.1.
+
 ## Install
 
 In Claude Code:
@@ -53,10 +55,12 @@ Reading your connected tools is read-only. Delete the folder whenever you like.
 At the end of each brief it asks you two questions and prints a short **feedback card**:
 
 ```
-meeting-prep feedback · v0.1
+meeting-prep feedback · v0.2
 meeting type: …
 sources: …
 brief: … words · factcheck … FAIL · shape …/8
+coverage: … findings · … used · … set aside
+reader: room-changers … · position … · runnable … · rounds …
 bar: yes | no
 reads: 0 | 1 | 2
 note: …

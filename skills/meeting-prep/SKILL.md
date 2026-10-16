@@ -118,7 +118,8 @@ Then file into the topics, following the template:
 Follow `BRIEF-FORMAT.md`. Before you write What:
 
 - **Account for every key finding** — each one used in the brief, or set
-  aside in one line. Check the list's breadth: if every finding sits close
+  aside in one line, with its ID cited on that line (`BRIEF-FORMAT.md`)
+  so the coverage check can count it. Check the list's breadth: if every finding sits close
   to one example, go back for the strongest evidence from the others.
 - **Check every claim the argument leans on.** Something someone *said*
   happened is a claim until the data confirms it. Confirmed → can carry
@@ -143,24 +144,52 @@ the brief's position. It is often the thing they most need. Anything too
 delicate, or that depends on the outcome, gets a line in
 `meeting-prep/drafts/queue-note.md` instead. **Nothing is sent.**
 
-## Step 5 — Verify. Two gates.
+## Step 5 — Verify. Four checks, cheapest first.
 
 Run, from the directory that holds `meeting-prep/`:
 
 ```bash
 node ${CLAUDE_SKILL_DIR}/scripts/factcheck.js meeting-prep/briefs/<the brief> meeting-prep/drafts meeting-prep/topics --sources meeting-prep/sources --data meeting-prep/sources/data
+node ${CLAUDE_SKILL_DIR}/scripts/coverage.js meeting-prep/briefs/<the brief> <each topic file the meeting touches>
 node ${CLAUDE_SKILL_DIR}/scripts/score.js meeting-prep/briefs/<the brief>
 ```
 
-(Leave out `--data …` if there is no tabular data.)
+(Leave out `--data …` if there is no tabular data.) Then the independent
+reader, below. Drafts get factcheck only.
 
 - **factcheck — any FAIL means the brief is wrong, not debatable.** Fix it
   and re-run until zero FAILs. Quotation marks mean verbatim; if the words
   aren't exact, paraphrase without quotes. A paragraph or page number is a
   claim — if you didn't count, don't number. Review items are judgement
   calls: a figure you computed yourself is fine — say how in the brief.
+- **coverage — any FAIL blocks.** A `DROPPED` or `FOLDED` finding goes
+  into the default view next to the point it changes, or gets one line in
+  *Not this meeting* saying why not. `NOID`: add the missing ID to the
+  topic file. `UNKNOWN`: the brief cites an ID that doesn't exist — remove it.
 - **score — fix every ✗ and every ~.** Shape problems are cheap to fix and
   the reader notices every one.
+- **Independent reader — does the brief carry what the record says
+  matters.** Launch a fresh subagent with
+  `${CLAUDE_SKILL_DIR}/references/READER-PROMPT.md`, on a model at least as
+  strong as yours. Its sources are `meeting-prep/sources/`; it never opens
+  `meeting-prep/topics/`; its output goes to `meeting-prep/reader/<brief
+  name>/`. It writes its own list before it opens the brief, then scores
+  three dimensions 0–2: room-changers, the position, runnable from How.
+  **Act on each dimension separately; never add them up.** A 1 is a note
+  for the person, not a block. On any 0:
+  1. **Revise** from the reader's `fixes`, changing only what they name.
+     Re-run the scripts, then re-check with the reader's list held fixed
+     (*Re-checking* in `READER-PROMPT.md`).
+  2. **Still 0 → step back.** For each missing item, read the source the
+     reader cited in full and update the topic file (a Key finding with a
+     new ID, a *Depends on* line, or a *Claims to check* status). Rewrite
+     the parts of the brief it touches; re-run every check.
+  3. **Still 0 → publish with a warning** as the brief's first line, above
+     Background: `> **Independent reader:** <the missing item> — it's in
+     `<source>`. <why it matters in the room>.` The person decides.
+
+  If you can't launch a subagent, say so plainly and tell the person this
+  check didn't run.
 
 If Node isn't available, say so plainly, check quotes and figures by hand
 against `meeting-prep/sources/`, and tell the person the gates were done
@@ -183,10 +212,12 @@ by hand.
    words: ask them to check it holds nothing private before they send it.
 
 ```
-meeting-prep feedback · v0.1
+meeting-prep feedback · v0.2
 meeting type: <proposing | status | being questioned>
 sources: <connected tools | folder | pasted>
 brief: <N> words (score's default-view count) · factcheck <N> FAIL · shape <n>/8
+coverage: <N> findings · <N> used · <N> set aside
+reader: room-changers <0-2> · position <0-2> · runnable <0-2> · rounds <1 | revise | step back | warning | not run>
 bar: <yes | no>
 reads: <0 | 1 | 2>
 note: <their line, or "none">

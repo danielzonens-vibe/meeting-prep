@@ -227,7 +227,12 @@ learning the paper trail points at the wrong person.
 
 Every *Key finding* in the topic files is accounted for: used in the
 default view, or set aside in one line in *Not this meeting*. None
-disappears between the file and the brief.
+disappears between the file and the brief. Cite its ID as an HTML
+comment at the end of the line that uses it or sets it aside —
+`<!-- KF-<file-name>-<n> -->` — so the reader never sees it and
+`coverage.js` can count it. A finding cited only inside some other
+fold counts as dropped. Cite an ID only on a line that actually carries
+the finding; the independent reader checks the line, not the tag.
 
 If a fact changes what you should do in the room, it goes in the brief —
 not in a collapsed fold, and not only in the digest. **That includes facts

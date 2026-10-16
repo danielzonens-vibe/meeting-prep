@@ -34,6 +34,7 @@ if (!files.length) {
 // Default view = what a reader sees without opening anything. Folds,
 // fenced diagrams and the trailing source footer don't count as words.
 const defaultView = (raw) => raw
+  .replace(/<!--[\s\S]*?-->/g, ' ')            // finding IDs (coverage.js)
   .replace(/<details>[\s\S]*?<\/details>/g, ' ')
   .replace(/```[\s\S]*?```/g, ' ');
 

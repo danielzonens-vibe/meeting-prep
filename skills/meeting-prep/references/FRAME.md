@@ -53,7 +53,7 @@ the working folder's `lessons.md`, and is read on every later run.
 A 70%-right brief costs as much to fix as one written from scratch.
 
 ## Verification is not optional
-Two small scripts check every brief before the person sees it:
+Three small scripts and one independent reader check every brief before the person sees it:
 
 - **`factcheck.js`** — every quoted line is verbatim in the source it
   cites; every paragraph number exists; every cross-reference lands; every
@@ -64,6 +64,12 @@ Two small scripts check every brief before the person sees it:
 - **`score.js`** — the shape: length, the four sections, a decision you
   could say out loud, a real time axis, callouts that lead with the bottom
   line, steps that stand alone.
+- **`coverage.js`** — every key finding in a topic file is used in the
+  brief or set aside out loud. A finding filed and silently dropped is the
+  most common way a brief loses its best evidence.
+- **The independent reader** (`READER-PROMPT.md`) — a separate model reads
+  the raw sources, never the topic files, and lists what must be in the
+  brief before it reads it. It catches what the writer's own frame hid.
 
 The pattern these exist for: the system is reliable on facts it retrieved
 and unreliable on everything it writes between them.
